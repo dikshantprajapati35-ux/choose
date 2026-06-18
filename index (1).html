@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kya Ho Agar...? 💞</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#FAF7F4; --blush:#F2DADA; --petal:#E8C4C4; --lavender:#D8D0EC;
+  --lilac:#C9BEE3; --dusty:#B8AECF; --rose:#C98989; --mauve:#9D7B7B;
+  --ink:#2D2020; --muted:#7A6060;
+  --card-bg:rgba(255,255,255,0.72); --glass:rgba(255,255,255,0.55);
+  --r-sm:12px; --r-md:20px; --r-lg:32px; --r-xl:48px;
+  --shadow-card:0 8px 40px rgba(160,100,100,0.13);
+  --shadow-btn:0 2px 12px rgba(180,120,120,0.18);
+  --tr:0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:linear-gradient(135deg,#FAF0F0 0%,#F2EAF8 50%,#EAF0FA 100%);
+  min-height:100vh; color:var(--ink); overflow-x:hidden;
+}
+/* Hearts */
+#hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.hf{position:absolute;opacity:0;animation:fh linear infinite;user-select:none;font-size:clamp(10px,2vw,16px)}
+@keyframes fh{0%{transform:translateY(100vh) rotate(-10deg);opacity:0}10%{opacity:0.3}90%{opacity:0.15}100%{transform:translateY(-10vh) rotate(10deg);opacity:0}}
+/* App */
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+/* Screens */
+.screen{display:none;width:100%;max-width:480px;padding:28px 20px 80px;animation:fi .4s ease}
+.screen.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+/* Card */
+.card{
+  background:var(--card-bg);backdrop-filter:blur(16px);
+  border-radius:var(--r-lg);padding:28px 24px;
+  box-shadow:var(--shadow-card);border:1.5px solid rgba(255,255,255,0.8);
+}
+.card+.card{margin-top:16px}
+/* Type */
+.display{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,40px);line-height:1.15}
+.display em{font-style:italic;color:var(--rose)}
+.subtitle{font-size:14px;color:var(--muted)}
+.label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--dusty)}
+h2{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,26px);font-weight:600}
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 24px;border-radius:var(--r-xl);border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  transition:var(--tr);position:relative;overflow:hidden;white-space:nowrap;
+}
+.btn:active{transform:scale(0.96)}
+.btn-primary{background:linear-gradient(135deg,var(--petal),var(--lilac));color:var(--ink);box-shadow:var(--shadow-btn)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(180,120,120,.25)}
+.btn-ghost{background:var(--glass);backdrop-filter:blur(12px);color:var(--mauve);border:1.5px solid rgba(200,150,150,.25)}
+.btn-ghost:hover{background:rgba(255,255,255,.85);transform:translateY(-1px)}
+.btn-danger{background:rgba(220,80,80,.08);color:#c05050;border:1.5px solid rgba(220,80,80,.2)}
+.btn-danger:hover{background:rgba(220,80,80,.14)}
+.btn-full{width:100%}
+/* Mode grid */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.mode-card{
+  background:var(--card-bg);backdrop-filter:blur(16px);
+  border-radius:var(--r-md);border:1.5px solid rgba(255,255,255,.8);
+  padding:22px 16px;cursor:pointer;text-align:center;
+  transition:var(--tr);box-shadow:0 4px 24px rgba(180,120,120,.10);
+}
+.mode-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);border-color:var(--petal)}
+.mode-card .ic{font-size:28px;margin-bottom:8px}
+.mode-card .mt{font-size:13px;font-weight:600;color:var(--ink)}
+.mode-card .ms{font-size:11px;color:var(--muted);margin-top:3px}
+/* Compat bar */
+.cbar{background:rgba(216,208,236,.3);border-radius:50px;height:6px;overflow:hidden;margin-top:10px}
+.cfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--petal),var(--lilac));transition:width 1.2s ease}
+/* Room */
+.room-code{
+  font-family:'Playfair Display',serif;font-size:40px;font-weight:600;
+  letter-spacing:.18em;color:var(--rose);text-align:center;
+  padding:20px;background:var(--blush);border-radius:var(--r-md);
+  margin:16px 0;border:2px dashed var(--petal);
+}
+.p-row{display:flex;gap:12px;margin-top:16px}
+.p-pill{
+  flex:1;padding:12px 16px;border-radius:var(--r-md);
+  background:var(--glass);border:1.5px solid rgba(200,150,150,.2);
+  text-align:center;font-size:13px;
+}
+.p-pill.on{background:rgba(200,230,200,.4);border-color:rgba(100,180,100,.3)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ccc;margin-right:5px;vertical-align:middle}
+.p-pill.on .dot{background:#6dbc6d}
+/* Game nav */
+.gnav{display:flex;align-items:center;justify-content:space-between;padding:16px 4px 8px}
+.qcount{font-size:12px;color:var(--muted);font-weight:600}
+/* Question card */
+.qcard{
+  background:var(--card-bg);backdrop-filter:blur(16px);
+  border-radius:var(--r-lg);padding:32px 24px 24px;
+  box-shadow:var(--shadow-card);border:1.5px solid rgba(255,255,255,.85);
+}
+.qcard.pop{animation:cpop .4s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes cpop{from{opacity:0;transform:scale(.93) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.qtxt{
+  font-family:'Playfair Display',serif;font-size:clamp(17px,4.5vw,22px);
+  line-height:1.45;text-align:center;margin:16px 0 24px;
+}
+/* Options */
+.ogrid{display:grid;gap:10px}
+.obtn{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  border-radius:var(--r-md);background:rgba(255,255,255,.6);
+  border:1.5px solid rgba(200,180,180,.2);cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);
+  transition:all .22s ease;width:100%;text-align:left;
+}
+.okey{
+  min-width:28px;height:28px;border-radius:50%;background:var(--blush);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:12px;color:var(--rose);flex-shrink:0;
+}
+.obtn:hover{background:rgba(255,255,255,.9);border-color:var(--petal);transform:translateX(4px)}
+.obtn.sel{background:linear-gradient(135deg,rgba(242,218,218,.7),rgba(216,208,236,.7));border-color:var(--petal);transform:none}
+.obtn.sel .okey{background:var(--rose);color:white}
+.obtn:disabled{cursor:default;pointer-events:none}
+/* Partner badge */
+.pbadge{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 12px;
+  border-radius:20px;background:rgba(100,180,100,.15);
+  border:1px solid rgba(100,180,100,.3);font-size:12px;color:#4a9a4a;font-weight:600;
+}
+/* Chat */
+.chat-wrap{
+  background:rgba(255,255,255,.5);backdrop-filter:blur(12px);
+  border-radius:var(--r-md);border:1.5px solid rgba(200,180,180,.2);
+  margin-top:16px;overflow:hidden;
+}
+.chat-msgs{max-height:130px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.chat-msgs::-webkit-scrollbar{width:3px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--petal);border-radius:2px}
+.bubble{max-width:75%;padding:7px 12px;border-radius:16px;font-size:13px;line-height:1.4;animation:bpop .25s ease}
+@keyframes bpop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.bubble.me{align-self:flex-end;background:linear-gradient(135deg,var(--petal),var(--lilac));color:var(--ink);border-bottom-right-radius:4px}
+.bubble.them{align-self:flex-start;background:rgba(255,255,255,.8);border:1px solid rgba(200,180,180,.2);border-bottom-left-radius:4px}
+.bmeta{font-size:10px;color:var(--muted);margin-top:2px}
+.ebar{display:flex;gap:4px;padding:8px 14px;border-top:1px solid rgba(200,180,180,.12);overflow-x:auto;scrollbar-width:none}
+.ebar::-webkit-scrollbar{display:none}
+.er{font-size:18px;cursor:pointer;border:none;background:none;padding:4px;border-radius:8px;transition:transform .2s;flex-shrink:0}
+.er:hover{transform:scale(1.3)}
+.cinput-row{display:flex;gap:8px;padding:10px 14px;border-top:1px solid rgba(200,180,180,.12)}
+.cinput{
+  flex:1;border:1.5px solid rgba(200,180,180,.2);border-radius:20px;
+  padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:13px;
+  background:rgba(255,255,255,.7);color:var(--ink);outline:none;transition:border-color .2s;
+}
+.cinput:focus{border-color:var(--petal)}
+.csend{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--petal),var(--lilac));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:transform .2s;flex-shrink:0;
+}
+.csend:hover{transform:scale(1.1)}
+/* Reveal */
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.rv-box{text-align:center;padding:20px 12px;border-radius:var(--r-md);background:rgba(255,255,255,.6);border:1.5px solid rgba(200,180,180,.2)}
+.rv-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.rv-ch{font-family:'Playfair Display',serif;font-size:30px;color:var(--rose);margin:6px 0 4px}
+.rv-tx{font-size:12px;color:var(--ink);line-height:1.3}
+.reaction{
+  text-align:center;font-family:'Playfair Display',serif;font-size:17px;
+  color:var(--mauve);font-style:italic;padding:16px;
+  background:var(--blush);border-radius:var(--r-md);margin-top:8px;
+}
+/* Results */
+.rcard{
+  background:linear-gradient(135deg,var(--blush) 0%,var(--lavender) 100%);
+  border-radius:var(--r-lg);padding:32px 24px;
+  box-shadow:var(--shadow-card);border:1.5px solid rgba(255,255,255,.8);text-align:center;
+}
+.remoji{font-size:48px;margin-bottom:12px}
+.rtitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:600}
+.slist{margin-top:24px;display:flex;flex-direction:column;gap:14px}
+.shead{display:flex;justify-content:space-between;margin-bottom:6px}
+.sname{font-size:13px;font-weight:600}
+.sval{font-size:13px;color:var(--rose);font-weight:700}
+.sbar{height:7px;border-radius:50px;background:rgba(255,255,255,.5);overflow:hidden}
+.sfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--rose),var(--lilac));transition:width 1.4s cubic-bezier(.16,1,.3,1);width:0%}
+.roast-box{background:rgba(255,255,255,.6);border-radius:var(--r-md);padding:20px;margin-top:20px;border:1.5px dashed var(--petal)}
+.roast-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--dusty);margin-bottom:8px}
+.roast-txt{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:var(--mauve);line-height:1.55}
+/* Inputs */
+.inp{
+  width:100%;padding:13px 16px;border-radius:var(--r-md);
+  border:1.5px solid rgba(200,180,180,.25);background:rgba(255,255,255,.7);
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.inp:focus{border-color:var(--petal);box-shadow:0 0 0 3px rgba(228,180,180,.15)}
+.inp::placeholder{color:var(--dusty)}
+select.inp{cursor:pointer}
+.flbl{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;display:block}
+/* Daily */
+.daily-card{
+  background:linear-gradient(135deg,rgba(242,218,218,.6),rgba(216,208,236,.6));
+  border-radius:var(--r-lg);padding:28px 22px;
+  border:1.5px solid rgba(255,255,255,.8);box-shadow:var(--shadow-card);text-align:center;
+}
+.dtag{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  background:rgba(201,137,137,.2);color:var(--rose);
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;
+}
+/* Toast */
+#toast{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:white;padding:12px 24px;border-radius:40px;
+  font-size:13px;font-weight:600;
+  transition:transform .4s cubic-bezier(0.34,1.56,0.64,1),opacity .3s;
+  opacity:0;z-index:9999;white-space:nowrap;pointer-events:none;
+}
+#toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+/* Chip */
+.chip{display:inline-block;padding:4px 12px;border-radius:20px;background:var(--blush);color:var(--rose);font-size:12px;font-weight:600}
+/* Waiting dots */
+.wdots span{animation:wd 1.4s ease-in-out infinite}
+.wdots span:nth-child(2){animation-delay:.2s}
+.wdots span:nth-child(3){animation-delay:.4s}
+@keyframes wd{0%,80%,100%{opacity:.2}40%{opacity:1}}
+/* Firebase banner */
+#fb-banner{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(90deg,var(--blush),var(--lavender));
+  padding:10px 20px;text-align:center;font-size:12px;color:var(--mauve);
+  z-index:200;border-top:1px solid var(--petal);
+}
+/* Helpers */
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+.mt20{margin-top:20px}.mt24{margin-top:24px}
+.tc{text-align:center}.tm{color:var(--muted);font-size:13px}
+.fb{display:flex;justify-content:space-between;align-items:center}
+.h{display:none!important}
+@media(max-width:380px){
+  .screen{padding:20px 14px 50px}
+  .mode-grid{gap:8px}
+  .mode-card{padding:16px 10px}
+}
+</style>
+</head>
+<body>
+
+<div id="hearts-bg"></div>
+<div id="toast"></div>
+
+<div id="fb-banner">
+  ⚠️ Firebase not connected — <strong>Multiplayer is offline.</strong> Solo mode works perfectly!
+  <a href="https://firebase.google.com/docs/web/setup" target="_blank" style="color:var(--rose);margin-left:8px">Setup →</a>
+  <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;cursor:pointer;margin-left:10px;color:var(--mauve)">✕</button>
+</div>
+
+<div id="app">
+
+<!-- ══ HOME ══ -->
+<div class="screen active" id="s-home">
+  <div class="tc" style="padding-top:32px">
+    <div style="font-size:38px;margin-bottom:10px">💞</div>
+    <h1 class="display">Kya Ho <em>Agar...?</em></h1>
+    <p class="subtitle mt8">A couple's game of secret choices &amp; honest chaos</p>
+  </div>
+
+  <div class="card mt24">
+    <div class="fb">
+      <span class="label">Couple Vibe</span>
+      <span class="chip">Ready to Play</span>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:6px">Both answer secretly → compare → get roasted 😂</p>
+    <div class="cbar mt12"><div class="cfill" id="home-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="mode-grid">
+    <div class="mode-card" onclick="go('s-room')">
+      <div class="ic">🚀</div>
+      <div class="mt">Play Together</div>
+      <div class="ms">Create or join a room</div>
+    </div>
+    <div class="mode-card" onclick="startSolo()">
+      <div class="ic">🎲</div>
+      <div class="mt">Solo Random</div>
+      <div class="ms">Quick practice mode</div>
+    </div>
+    <div class="mode-card" onclick="go('s-create')">
+      <div class="ic">✍️</div>
+      <div class="mt">Create Question</div>
+      <div class="ms">Write your own</div>
+    </div>
+    <div class="mode-card" onclick="go('s-daily')">
+      <div class="ic">🔥</div>
+      <div class="mt">Daily Question</div>
+      <div class="ms">Today's special</div>
+    </div>
+  </div>
+
+  <div class="card mt16 tc">
+    <div class="label">15 Questions · Real-time Sync · Funny Roasts</div>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px;line-height:1.6">
+      Share your room code → answer secretly<br>→ reveal together → see how in sync you are ✨
+    </p>
+  </div>
+</div>
+
+<!-- ══ ROOM ══ -->
+<div class="screen" id="s-room">
+  <div class="fb" style="padding-top:16px">
+    <button class="btn btn-ghost" onclick="go('s-home')" style="padding:10px 16px;font-size:13px">← Back</button>
+    <span class="label">Multiplayer Room</span>
+    <div style="width:70px"></div>
+  </div>
+
+  <!-- Setup form -->
+  <div class="card mt20" id="room-setup">
+    <h2 class="tc">Play Together 💑</h2>
+    <p class="tm tc mt8">Create a room or join with a code</p>
+
+    <div style="margin-top:16px">
+      <label class="flbl">Your Name</label>
+      <input class="inp" id="pname" placeholder="What do they call you? 🌸" maxlength="20">
+    </div>
+
+    <div class="mt20" style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary btn-full" onclick="createRoom()">✨ Create a Room</button>
+      <div class="tc" style="font-size:12px;color:var(--muted);padding:2px 0">— or join one —</div>
+      <div style="display:flex;gap:8px">
+        <input class="inp" id="jcode" placeholder="Room code (e.g. LOVE42)" maxlength="8"
+          style="letter-spacing:.1em;text-transform:uppercase">
+        <button class="btn btn-ghost" onclick="joinRoom()" style="white-space:nowrap;padding:13px 18px">Join</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lobby -->
+  <div class="card mt16 h" id="room-lobby">
+    <div class="tc">
+      <div class="label">Your Room Code</div>
+      <div class="room-code" id="rcode-display">------</div>
+      <button class="btn btn-ghost" onclick="copyLink()" style="font-size:12px;padding:8px 18px">📋 Copy Invite Link</button>
+    </div>
+
+    <div class="p-row">
+      <div class="p-pill on" id="p1pill">
+        <div><span class="dot"></span><span id="p1name">Player 1</span> ✅</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Host</div>
+      </div>
+      <div class="p-pill" id="p2pill">
+        <div><span class="dot"></span><span id="p2name">Waiting...</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">
+          <span class="wdots"><span>•</span><span>•</span><span>•</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+      <div>
+        <label class="flbl">Game Mode</label>
+        <select class="inp" id="gmode">
+          <option value="random">🎲 Random Questions (10 rounds)</option>
+          <option value="daily">🔥 Daily Special Question</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full h" id="start-btn" onclick="hostStart()">💞 Start Game</button>
+      <p class="tm tc h" id="wait-p2">Waiting for your partner to join...</p>
+      <p class="tm tc h" id="wait-host">Waiting for host to start the game...</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GAME ══ -->
+<div class="screen" id="s-game">
+  <div class="gnav">
+    <span class="qcount" id="qcount">Question 1 / 10</span>
+    <button class="btn btn-danger" style="padding:8px 16px;font-size:12px" onclick="stopGame()">Stop Game</button>
+  </div>
+
+  <div class="qcard pop" id="qcard">
+    <div class="tc"><span class="label" id="qcat">Hypothetical</span></div>
+    <p class="qtxt" id="qtxt">Loading...</p>
+    <div class="ogrid" id="ogrid"></div>
+
+    <div class="mt16 tc h" id="partner-answered">
+      <span class="pbadge">✅ Partner answered — waiting for you</span>
+    </div>
+    <div class="mt12 tc h" id="waiting-partner">
+      <span style="font-size:13px;color:var(--muted)">You answered! Waiting for partner <span class="wdots" style="font-size:14px"><span>•</span><span>•</span><span>•</span></span></span>
+    </div>
+    <button class="btn btn-primary btn-full mt16 h" id="next-btn" onclick="nextQ()">Next Question →</button>
+  </div>
+
+  <div class="chat-wrap" id="chat-wrap">
+    <div class="chat-msgs" id="chat-msgs">
+      <div style="text-align:center;font-size:11px;color:var(--muted);padding:4px">Chat while you play 💬</div>
+    </div>
+    <div class="ebar" id="ebar"></div>
+    <div class="cinput-row">
+      <input class="cinput" id="cinput" placeholder="Say something... (50 chars)" maxlength="50">
+      <button class="csend" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REVEAL ══ -->
+<div class="screen" id="s-reveal">
+  <div class="tc" style="padding-top:24px">
+    <div class="label">Reveal Time 👀</div>
+    <h2 style="margin-top:8px;font-size:20px">Let's see what you both chose</h2>
+  </div>
+
+  <div class="card mt20">
+    <p class="qtxt" style="font-size:15px;margin:0" id="rv-qtxt"></p>
+  </div>
+
+  <div class="rv-grid">
+    <div class="rv-box">
+      <div class="rv-lbl" id="rv-p1lbl">Player 1</div>
+      <div class="rv-ch" id="rv-p1ch">?</div>
+      <div class="rv-tx" id="rv-p1tx"></div>
+    </div>
+    <div class="rv-box">
+      <div class="rv-lbl" id="rv-p2lbl">Player 2</div>
+      <div class="rv-ch" id="rv-p2ch">?</div>
+      <div class="rv-tx" id="rv-p2tx"></div>
+    </div>
+  </div>
+
+  <div class="reaction" id="reaction-txt"></div>
+
+  <div style="display:flex;gap:10px;margin-top:20px">
+    <button class="btn btn-ghost" style="flex:1" onclick="go('s-home')">🏠 Home</button>
+    <button class="btn btn-primary" style="flex:1" id="rv-next" onclick="nextQ()">Next →</button>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div class="screen" id="s-results">
+  <div class="tc" style="padding-top:24px"><div class="label">Game Over · Results</div></div>
+
+  <div class="rcard mt16">
+    <div class="remoji">💞</div>
+    <div class="rtitle">Relationship Card</div>
+    <div style="font-size:13px;color:var(--mauve);margin-top:6px" id="rnames">Player 1 &amp; Player 2</div>
+    <div class="slist" id="slist"></div>
+  </div>
+
+  <div class="roast-box">
+    <div class="roast-lbl">🤖 AI Verdict</div>
+    <div class="roast-txt" id="roast-txt"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:20px">
+    <button class="btn btn-ghost btn-full" onclick="go('s-home')">🏠 Home</button>
+    <button class="btn btn-primary btn-full" onclick="playAgain()">Play Again 🔄</button>
+  </div>
+</div>
+
+<!-- ══ CREATE ══ -->
+<div class="screen" id="s-create">
+  <div class="fb" style="padding-top:16px">
+    <button class="btn btn-ghost" onclick="go('s-home')" style="padding:10px 16px;font-size:13px">← Back</button>
+    <span class="label">Custom Question</span>
+    <div style="width:60px"></div>
+  </div>
+
+  <div class="card mt20">
+    <h2>Write Your Scenario ✍️</h2>
+    <p class="tm mt8">Create a hypothetical situation &amp; options</p>
+
+    <div style="margin-top:16px">
+      <label class="flbl">Your Question</label>
+      <input class="inp" id="custom-q" placeholder="What if we missed our flight? ✈️" maxlength="120">
+    </div>
+
+    <button class="btn btn-ghost btn-full mt12" onclick="autoOpts()" id="autobtn">🤖 Auto-Generate Options</button>
+
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+      <div>
+        <label class="flbl">Option A</label>
+        <input class="inp copt" placeholder="Panic 😭" maxlength="60">
+      </div>
+      <div>
+        <label class="flbl">Option B</label>
+        <input class="inp copt" placeholder="Laugh it off 😂" maxlength="60">
+      </div>
+      <div>
+        <label class="flbl">Option C</label>
+        <input class="inp copt" placeholder="Find food first 🍔" maxlength="60">
+      </div>
+      <div>
+        <label class="flbl">Option D</label>
+        <input class="inp copt" placeholder="Ask a stranger 🫣" maxlength="60">
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full mt20" onclick="startCustom()">💞 Play This Question</button>
+  </div>
+</div>
+
+<!-- ══ DAILY ══ -->
+<div class="screen" id="s-daily">
+  <div class="fb" style="padding-top:16px">
+    <button class="btn btn-ghost" onclick="go('s-home')" style="padding:10px 16px;font-size:13px">← Back</button>
+    <span class="label">Daily Question</span>
+    <div style="width:60px"></div>
+  </div>
+
+  <div class="daily-card mt20">
+    <div class="dtag">🔥 Today's Question</div>
+    <h2 id="daily-qtxt" style="font-size:20px;line-height:1.4;font-style:italic"></h2>
+    <p class="tm mt12" id="daily-date" style="font-size:12px"></p>
+  </div>
+
+  <div class="card mt16">
+    <div class="label">Today's Options</div>
+    <div class="ogrid mt12" id="daily-opts"></div>
+  </div>
+
+  <button class="btn btn-primary btn-full mt20" onclick="startDaily()">🔥 Play This Question</button>
+</div>
+
+</div><!-- /app -->
+
+<script>
+/* ═══════════════════════════════════════════
+   KYA HO AGAR — COMPLETE GAME LOGIC
+═══════════════════════════════════════════ */
+
+/* ── Data ── */
+const QS = [
+  {text:"What if it suddenly starts raining during your date? 🌧️",cat:"Date Night",opts:["A) Find shelter ☔","B) Dance in the rain 💃","C) Tea emergency ☕","D) Cute rain photos 📸"]},
+  {text:"What if your partner steals all the fries? 🍟",cat:"Food Wars",opts:["A) Silent war 😤","B) Order more 🍟","C) Steal them back 😈","D) Share everything ❤️"]},
+  {text:"What if we both forgot our anniversary? 😱",cat:"Reality Check",opts:["A) Pretend it's tomorrow 😭","B) Emergency celebration 🎉","C) Laugh it off 😂","D) Blame each other 👆"]},
+  {text:"What if we got completely lost in a new city? 🗺️",cat:"Adventure",opts:["A) Panic immediately 😱","B) Best adventure ever 🎉","C) Food first 🍔","D) Ask a stranger 🫣"]},
+  {text:"What if one of us snores REALLY loudly? 😴",cat:"Real Life",opts:["A) Separate rooms 😅","B) Noise-cancelling headphones 🎧","C) Record & blackmail 📹","D) Poke awake 👉"]},
+  {text:"What if we missed a flight for a dream vacation? ✈️",cat:"Travel Chaos",opts:["A) Cry at airport 😭","B) Airport hotel adventure 🏨","C) Blame the taxi 🚕","D) Upgrade next flight 💳"]},
+  {text:"What if we had to survive 24 hours with no phones? 📵",cat:"Digital Detox",opts:["A) Full meltdown 💀","B) Board games era 🎲","C) Actually talk 👀","D) Read books like fancy people 📚"]},
+  {text:"What if your partner hated your favourite movie? 🎬",cat:"Opinions",opts:["A) Reconsider everything 😂","B) Make them rewatch 🔄","C) Agree to disagree 🤝","D) Never mention it 🤫"]},
+  {text:"What if we won ₹10 crore tomorrow? 💰",cat:"Big Dreams",opts:["A) Travel everything 🌍","B) Invest it all 📈","C) Buy random things 🛒","D) Tell absolutely no one 🤫"]},
+  {text:"What if one of us becomes super famous? ⭐",cat:"Future Chaos",opts:["A) They handle it fine 😎","B) I become the manager 💼","C) We hide from paparazzi 📷","D) Meltdown together 😭"]},
+  {text:"What if our internet goes out for a week? 🌐",cat:"Tech Crisis",opts:["A) Live at a café ☕","B) Rediscover hobbies 🎨","C) Fight over hotspot 📡","D) Pretend it's the 90s 📺"]},
+  {text:"What if we had to cook together every day? 🍳",cat:"Domestic Life",opts:["A) Absolute chaos 🔥","B) We become MasterChefs 👨‍🍳","C) Order food secretly 🤫","D) One cooks, one supervises 👀"]},
+  {text:"What if a stray cat followed us home? 🐱",cat:"Spontaneous",opts:["A) Keep it forever 😻","B) Find the owner 📢","C) Feed then release 🍖","D) Argue about it for days 😤"]},
+  {text:"What if we could only communicate in emojis for a week? 😅",cat:"Chaos Round",opts:["A) We'd manage fine 😎","B) Full breakdown 💀","C) Becomes our love language ❤️","D) Switch to memes only 🐸"]},
+  {text:"What if one of us gives a speech at a stranger's wedding? 💍",cat:"Social Anxiety",opts:["A) Absolutely not 😭","B) Improvise dramatically 🎭","C) Prepare intensely 📝","D) Both go on stage 🫂"]}
+];
+
+const DAILY = {
+  text:"What if your partner had to describe you in only 3 emojis? 🤔",
+  cat:"Daily Special",
+  opts:["A) They'd nail it 🎯","B) Hilariously wrong 😂","C) I'd be offended 😤","D) We'd debate for 20 mins 💬"]
+};
+
+const ROASTS = [
+  "You both disagree on everything except food. That's enough. 🍔",
+  "Communication level: mostly emojis. Somehow thriving. 😭",
+  "One practical, one dramatic. Together: somehow working. 🫠",
+  "You share one functioning brain cell and you're both fighting over it. 💀",
+  "Love languages: Chaos and Overthinking. A perfect match. 🤌",
+  "Your compatibility score is just vibes. And your vibes are... complicated. ✨",
+  "You agreed on food. Everything else is a work in progress. 🍕",
+  "Chaos level: off the charts. Love level: also off the charts. Balance achieved. 😈",
+  "You both chose chaos over logic. Soulmates confirmed. 💞",
+  "Neither of you is practical. Beautiful or terrifying? Both. 🌸",
+  "Same energy: unpredictable but weirdly in sync. 🌙",
+  "Decision-making: gut feeling + coin flip. And it works? 💫"
+];
+
+const RXNS = {
+  match: ["Soulmates detected 💞","Same brain, different bodies 🧠","Scary how in sync you are 👀","Couple goals literally 💕"],
+  close: ["Almost the same vibe 🌗","Different but close 🫧","Complementary energy ✨","Twinning attempt 😂"],
+  diff:  ["Different energy detected 😭","Chaotic duo fr 💀","How are you two together 😂","Opposites attract apparently 🌗"]
+};
+
+const EMOJIS = ["🫦","😈","😭","🤣","😋","😱","🤬","😽","😻","💀","🫠","🤌","👀","💞","🔥"];
+
+/* ── State ── */
+const G = {
+  mode:'solo', pnum:1, names:{1:'You',2:'Partner'},
+  room:null, qs:[], qi:0,
+  myAns:null, partnerAns:null,
+  log:[], chatSeen:new Set(), unsubs:[]
+};
+
+/* ══════ NAV ══════ */
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='s-daily') initDaily();
+}
+
+/* ══════ TOAST ══════ */
+function toast(m){
+  const t=document.getElementById('toast');
+  t.textContent=m; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2800);
+}
+
+/* ══════ HEARTS ══════ */
+function hearts(){
+  const bg=document.getElementById('hearts-bg');
+  const s=['💞','🌸','✨','💕','🩷','🫧','🌷'];
+  for(let i=0;i<14;i++){
+    const h=document.createElement('span');
+    h.className='hf'; h.textContent=s[i%s.length];
+    h.style.left=(Math.random()*100)+'vw';
+    h.style.animationDuration=(12+Math.random()*16)+'s';
+    h.style.animationDelay=(Math.random()*22)+'s';
+    bg.appendChild(h);
+  }
+}
+
+/* ══════ HELPERS ══════ */
+function sh(id){document.getElementById(id).classList.remove('h')}
+function hi(id){document.getElementById(id).classList.add('h')}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function randKey(){return['A','B','C','D'][Math.floor(Math.random()*4)]}
+
+/* ══════ FIREBASE ══════ */
+function fbOk(){return !!window._fbReady}
+function rref(path=''){
+  const {db,ref}=window._fb;
+  return ref(db,`rooms/${G.room}${path?'/'+path:''}`);
+}
+
+/* ══════ SOLO ══════ */
+function startSolo(){
+  G.mode='solo'; G.pnum=1; G.names={1:'You',2:'Partner'};
+  G.qs=shuffle([...QS]).slice(0,8); G.qi=0; G.log=[];
+  startGame();
+}
+function startDaily(){
+  G.mode='solo'; G.names={1:'You',2:'Partner'};
+  G.qs=[DAILY]; G.qi=0; G.log=[];
+  startGame();
+}
+function startCustom(){
+  const q=document.getElementById('custom-q').value.trim();
+  if(!q){toast('Write your question first!');return}
+  const inputs=document.querySelectorAll('.copt');
+  const opts=Array.from(inputs).map((inp,i)=>{
+    const v=inp.value.trim()||'Option '+'ABCD'[i];
+    return 'ABCD'[i]+') '+v;
+  });
+  G.mode='solo'; G.names={1:'You',2:'Partner'};
+  G.qs=[{text:q,cat:'Custom ✍️',opts}]; G.qi=0; G.log=[];
+  startGame();
+}
+
+/* ══════ ROOM: CREATE ══════ */
+async function createRoom(){
+  const name=document.getElementById('pname').value.trim()||'Player 1';
+  if(!fbOk()){toast('⚠️ Firebase not set up — try Solo mode!');return}
+  const code=genCode();
+  G.room=code; G.pnum=1; G.names[1]=name; G.mode='multiplayer';
+  const {db,ref,set}=window._fb;
+  try{
+    await set(ref(db,`rooms/${code}`),{
+      p1:name,p2:null,status:'lobby',gmode:'random',
+      qi:0,qs:[],answers:{},chat:{}
+    });
+    showLobby(code,name,null,true);
+    watchP2();
+  }catch(e){toast('❌ Firebase error. Check config.');console.error(e)}
+}
+
+/* ══════ ROOM: JOIN ══════ */
+async function joinRoom(){
+  const name=document.getElementById('pname').value.trim()||'Player 2';
+  const code=document.getElementById('jcode').value.trim().toUpperCase();
+  if(!code){toast('Enter a room code first');return}
+  if(!fbOk()){toast('⚠️ Firebase not set up');return}
+  const {db,ref,get,update}=window._fb;
+  try{
+    const snap=await get(ref(db,`rooms/${code}`));
+    if(!snap.exists()){toast('Room not found 😕');return}
+    const d=snap.val();
+    if(d.p2){toast('Room is full 😅');return}
+    G.room=code; G.pnum=2; G.names[1]=d.p1; G.names[2]=name; G.mode='multiplayer';
+    await update(ref(db,`rooms/${code}`),{p2:name});
+    showLobby(code,d.p1,name,false);
+    watchStart();
+  }catch(e){toast('❌ Error joining room');console.error(e)}
+}
+
+function genCode(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join('');
+}
+
+/* ══════ LOBBY ══════ */
+function showLobby(code,p1,p2,isHost){
+  hi('room-setup'); sh('room-lobby');
+  document.getElementById('rcode-display').textContent=code;
+  document.getElementById('p1name').textContent=p1||'Player 1';
+  document.getElementById('p2name').textContent=p2||'Waiting...';
+  const p2pill=document.getElementById('p2pill');
+  if(p2){
+    p2pill.classList.add('on');
+    document.getElementById('p2name').textContent=p2+' ✅';
+    p2pill.querySelector('.wdots').style.display='none';
+    if(isHost){sh('start-btn');hi('wait-p2')}else{sh('wait-host')}
+  }else{
+    p2pill.classList.remove('on');
+    if(isHost){sh('wait-p2')}
+  }
+}
+
+function copyLink(){
+  const url=location.href.split('?')[0]+'?room='+G.room;
+  navigator.clipboard.writeText(url).then(()=>toast('📋 Invite link copied!'));
+}
+
+function watchP2(){
+  if(!fbOk())return;
+  const {db,ref,onValue}=window._fb;
+  const u=onValue(ref(db,`rooms/${G.room}/p2`),snap=>{
+    const p2=snap.val();
+    if(p2){G.names[2]=p2;showLobby(G.room,G.names[1],p2,true)}
+  });
+  G.unsubs.push(u);
+}
+
+function watchStart(){
+  if(!fbOk())return;
+  const {db,ref,onValue,get}=window._fb;
+  const u=onValue(ref(db,`rooms/${G.room}/status`),async snap=>{
+    if(snap.val()==='playing'){
+      const s=await get(ref(db,`rooms/${G.room}`));
+      const d=s.val();
+      G.qs=d.qs||[]; G.qi=d.qi||0;
+      G.names[2]=d.p2||G.names[2];
+      startGame();
+    }
+  });
+  G.unsubs.push(u);
+}
+
+/* ══════ HOST START ══════ */
+async function hostStart(){
+  if(!fbOk())return;
+  const mode=document.getElementById('gmode').value;
+  const qs=mode==='daily'?[DAILY]:shuffle([...QS]).slice(0,10);
+  G.qs=qs; G.qi=0; G.log=[];
+  const {db,ref,update}=window._fb;
+  try{
+    await update(ref(db,`rooms/${G.room}`),{status:'playing',qs,qi:0,answers:{},chat:{}});
+    startGame();
+  }catch(e){toast('Error starting game');console.error(e)}
+}
+
+/* ══════ START GAME ══════ */
+function startGame(){
+  setupEmojis();
+  if(G.mode==='multiplayer')setupChatSync();
+  renderQ();
+  go('s-game');
+}
+
+/* ══════ RENDER QUESTION ══════ */
+function renderQ(){
+  const q=G.qs[G.qi];
+  if(!q){showResults();return}
+  G.myAns=null; G.partnerAns=null;
+  hi('partner-answered'); hi('waiting-partner'); hi('next-btn');
+
+  document.getElementById('qcount').textContent=`Question ${G.qi+1} / ${G.qs.length}`;
+  document.getElementById('qcat').textContent=q.cat||'Hypothetical';
+  document.getElementById('qtxt').textContent=q.text;
+
+  const grid=document.getElementById('ogrid');
+  grid.innerHTML='';
+  const KEYS=['A','B','C','D'];
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='obtn';
+    const lbl=opt.replace(/^[A-D]\)\s*/,'');
+    btn.innerHTML=`<span class="okey">${KEYS[i]}</span><span>${lbl}</span>`;
+    btn.onclick=()=>pick(KEYS[i],btn);
+    grid.appendChild(btn);
+  });
+
+  // Reanimate card
+  const card=document.getElementById('qcard');
+  card.classList.remove('pop');
+  void card.offsetWidth;
+  card.classList.add('pop');
+
+  if(G.mode==='multiplayer')watchPartner();
+}
+
+/* ══════ PICK ══════ */
+async function pick(key,btn){
+  if(G.myAns)return;
+  G.myAns=key;
+  document.querySelectorAll('.obtn').forEach(b=>{b.disabled=true;b.classList.remove('sel')});
+  btn.classList.add('sel');
+
+  if(G.mode==='solo'){
+    const pAns=randKey();
+    G.log.push({q:G.qs[G.qi],my:key,partner:pAns});
+    const isLast=G.qi>=G.qs.length-1;
+    document.getElementById('next-btn').textContent=isLast?'See Results 🎉':'Next Question →';
+    sh('next-btn');
+  }else{
+    const pk=G.pnum===1?'p1':'p2';
+    if(fbOk()){
+      const {db,ref,update}=window._fb;
+      try{await update(ref(db,`rooms/${G.room}/answers/${G.qi}`),{[pk]:key})}catch(e){console.error(e)}
+    }
+    if(G.partnerAns){reveal(G.myAns,G.partnerAns)}
+    else{sh('waiting-partner')}
+  }
+}
+
+function watchPartner(){
+  if(!fbOk())return;
+  const pk=G.pnum===1?'p2':'p1';
+  const {db,ref,onValue}=window._fb;
+  const u=onValue(ref(db,`rooms/${G.room}/answers/${G.qi}`),snap=>{
+    const d=snap.val()||{};
+    if(d[pk]&&!G.partnerAns){
+      G.partnerAns=d[pk];
+      hi('waiting-partner'); sh('partner-answered');
+      if(G.myAns)reveal(G.myAns,G.partnerAns);
+    }
+  });
+  G.unsubs.push(u);
+}
+
+/* ══════ REVEAL ══════ */
+function reveal(myAns,partnerAns){
+  const q=G.qs[G.qi];
+  const p1=G.pnum===1?myAns:partnerAns;
+  const p2=G.pnum===1?partnerAns:myAns;
+  G.log.push({q,my:myAns,partner:partnerAns});
+
+  document.getElementById('rv-qtxt').textContent=q.text;
+  document.getElementById('rv-p1lbl').textContent=G.names[1];
+  document.getElementById('rv-p2lbl').textContent=G.names[2];
+  const KEYS=['A','B','C','D'];
+  document.getElementById('rv-p1ch').textContent=p1;
+  document.getElementById('rv-p2ch').textContent=p2;
+  document.getElementById('rv-p1tx').textContent=(q.opts[KEYS.indexOf(p1)]||'').replace(/^[A-D]\)\s*/,'');
+  document.getElementById('rv-p2tx').textContent=(q.opts[KEYS.indexOf(p2)]||'').replace(/^[A-D]\)\s*/,'');
+
+  const diff=Math.abs(KEYS.indexOf(p1)-KEYS.indexOf(p2));
+  const pool=p1===p2?RXNS.match:diff===1?RXNS.close:RXNS.diff;
+  document.getElementById('reaction-txt').textContent=pool[Math.floor(Math.random()*pool.length)];
+
+  const isLast=G.qi>=G.qs.length-1;
+  document.getElementById('rv-next').textContent=isLast?'See Results 🎉':'Next →';
+  go('s-reveal');
+}
+
+/* ══════ NEXT Q ══════ */
+function nextQ(){
+  G.qi++;
+  if(G.qi>=G.qs.length){showResults();return}
+  if(G.mode==='multiplayer'&&G.pnum===1&&fbOk()){
+    const {db,ref,update}=window._fb;
+    update(ref(db,`rooms/${G.room}`),{qi:G.qi});
+  }
+  go('s-game');
+  setTimeout(renderQ,80);
+}
+
+/* ══════ STOP ══════ */
+function stopGame(){
+  if(confirm('End game and see results?'))showResults();
+}
+
+/* ══════ RESULTS ══════ */
+function showResults(){
+  cleanFb();
+  const total=G.log.length;
+  const matches=G.log.filter(a=>a.my===a.partner).length;
+  const compat=total?Math.round((matches/total)*100):Math.floor(40+Math.random()*55);
+
+  document.getElementById('rnames').textContent=`${G.names[1]} & ${G.names[2]}`;
+
+  const stats=[
+    {n:'Compatibility 💘',v:compat},
+    {n:'Chaos Level 💀',v:Math.min(99,100-compat+Math.floor(Math.random()*20))},
+    {n:'Romantic Energy 🌸',v:Math.floor(40+Math.random()*55)},
+    {n:'Brain Sync 🧠',v:Math.floor((matches/Math.max(total,1))*100)},
+    {n:'Food Compatibility 🍕',v:Math.floor(55+Math.random()*44)},
+    {n:'Funny Score 😂',v:Math.floor(50+Math.random()*48)},
+  ];
+
+  const list=document.getElementById('slist');
+  list.innerHTML='';
+  stats.forEach(s=>{
+    list.innerHTML+=`
+      <div>
+        <div class="shead"><span class="sname">${s.n}</span><span class="sval">${s.v}%</span></div>
+        <div class="sbar"><div class="sfill" data-t="${s.v}"></div></div>
+      </div>`;
+  });
+  document.getElementById('roast-txt').textContent=ROASTS[Math.floor(Math.random()*ROASTS.length)];
+  go('s-results');
+  setTimeout(()=>{
+    document.querySelectorAll('.sfill').forEach(b=>b.style.width=b.dataset.t+'%');
+  },350);
+}
+
+function playAgain(){
+  G.qs=shuffle([...QS]).slice(0,8); G.qi=0; G.log=[];
+  G.mode='solo'; G.names={1:'You',2:'Partner'};
+  startGame();
+}
+
+/* ══════ CHAT ══════ */
+function setupEmojis(){
+  const bar=document.getElementById('ebar');
+  bar.innerHTML='';
+  EMOJIS.forEach(e=>{
+    const b=document.createElement('button');
+    b.className='er'; b.textContent=e;
+    b.onclick=()=>sendMsg(e);
+    bar.appendChild(b);
+  });
+}
+
+function setupChatSync(){
+  if(!fbOk())return;
+  const {db,ref,onValue}=window._fb;
+  const u=onValue(ref(db,`rooms/${G.room}/chat`),snap=>{
+    const msgs=snap.val()||{};
+    Object.entries(msgs).forEach(([k,m])=>{
+      if(!G.chatSeen.has(k)){G.chatSeen.add(k);addBubble({...m,mine:m.pnum===G.pnum})}
+    });
+  });
+  G.unsubs.push(u);
+}
+
+function sendChat(){
+  const inp=document.getElementById('cinput');
+  const txt=inp.value.trim(); if(!txt)return;
+  inp.value=''; sendMsg(txt);
+}
+
+function sendMsg(txt){
+  const obj={from:G.names[G.pnum],pnum:G.pnum,text:txt,time:Date.now()};
+  if(G.mode==='multiplayer'&&fbOk()){
+    const {db,ref,push}=window._fb;
+    push(ref(db,`rooms/${G.room}/chat`),obj);
+  }else{addBubble({...obj,mine:true})}
+}
+
+function addBubble({from,text,time,mine}){
+  const c=document.getElementById('chat-msgs');
+  const d=document.createElement('div');
+  d.className='bubble '+(mine?'me':'them');
+  const ts=new Date(time||Date.now());
+  const hm=ts.getHours().toString().padStart(2,'0')+':'+ts.getMinutes().toString().padStart(2,'0');
+  d.innerHTML=`<div>${text}</div><div class="bmeta">${mine?hm:from+' · '+hm}</div>`;
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
+}
+
+/* ══════ DAILY ══════ */
+function initDaily(){
+  document.getElementById('daily-qtxt').textContent=DAILY.text;
+  const d=new Date();
+  document.getElementById('daily-date').textContent=
+    d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const grid=document.getElementById('daily-opts');
+  grid.innerHTML='';
+  DAILY.opts.forEach(opt=>{
+    const div=document.createElement('div');
+    div.className='obtn'; div.style.cursor='default';
+    div.innerHTML=`<span class="okey">${opt[0]}</span><span>${opt.replace(/^[A-D]\)\s*/,'')}</span>`;
+    grid.appendChild(div);
+  });
+}
+
+/* ══════ AUTO-OPTS ══════ */
+function autoOpts(){
+  const q=document.getElementById('custom-q').value.trim();
+  if(!q){toast('Write your question first ✍️');return}
+  const btn=document.getElementById('autobtn');
+  btn.textContent='✨ Generating...'; btn.disabled=true;
+  const POOLS=[
+    ["Panic and cry 😭","Laugh it off 😂","Find food first 🍔","Pretend it didn't happen 🫣"],
+    ["Over-plan everything 📋","Go full chaos 🎭","Ask Google 📱","Just vibe through it ✨"],
+    ["Blame each other 👆","Team up to fix it 🤝","Call mom 📞","Take a nap first 😴"],
+    ["Document it for Instagram 📸","Overthink for hours 🧠","Make a pro/con list 📝","Cry then eat 🍕"]
+  ];
+  const opts=POOLS[Math.floor(Math.random()*POOLS.length)];
+  setTimeout(()=>{
+    const inputs=document.querySelectorAll('.copt');
+    opts.forEach((o,i)=>{if(inputs[i])inputs[i].value=o});
+    btn.textContent='🤖 Auto-Generate Options'; btn.disabled=false;
+    toast('✨ Options generated!');
+  },700);
+}
+
+/* ══════ CLEANUP ══════ */
+function cleanFb(){G.unsubs.forEach(u=>{try{u()}catch(e){}});G.unsubs=[]}
+
+/* ══════ INIT ══════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  hearts();
+
+  // Home compat animation
+  setTimeout(()=>{document.getElementById('home-fill').style.width='72%'},800);
+
+  // Chat enter key
+  document.getElementById('cinput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
+
+  // Uppercase room code
+  document.getElementById('jcode').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase()});
+
+  // Auto-join from URL ?room=CODE
+  const p=new URLSearchParams(location.search);
+  const rc=p.get('room');
+  if(rc){
+    go('s-room');
+    document.getElementById('jcode').value=rc.toUpperCase();
+    toast('Room code filled! Enter your name and join 🌸');
+  }
+
+  // Firebase banner — only if multiplayer attempted
+  // (not shown on load, only when they try to use room)
+});
+
+/* ══════ FIREBASE (async, non-blocking) ══════ */
+(async()=>{
+  try{
+    const {initializeApp}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const {getDatabase,ref,set,get,onValue,push,update,remove}=
+      await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js");
+
+    /* ─────────────────────────────────────────────
+       PASTE YOUR FIREBASE CONFIG HERE
+       Firebase Console → Project Settings → Your Apps → Web App
+    ───────────────────────────────────────────── */
+    const cfg={
+      apiKey:"AIzaSyAHqobDLLdIpPbilLnJEwuEExQF761iihE",
+      authDomain:"kya-ho.firebaseapp.com",
+      databaseURL:"https://kya-ho-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      projectId:"kya-ho",
+      storageBucket:"kya-ho.firebasestorage.app",
+      messagingSenderId:"846200507052",
+      appId:"1:846200507052:web:f464319c5fea959863ad09"
+    };
+
+    // Only init if config looks real
+    if(cfg.apiKey==="YOUR_API_KEY"){
+      window._fbReady=false;
+      document.getElementById('fb-banner').style.display='block';
+      return;
+    }
+
+    const app=initializeApp(cfg);
+    const db=getDatabase(app);
+    window._fb={db,ref,set,get,onValue,push,update,remove};
+    window._fbReady=true;
+  }catch(e){
+    window._fbReady=false;
+    console.warn('Firebase failed to load:',e.message);
+  }
+})();
+</script>
+</body>
+</html>
